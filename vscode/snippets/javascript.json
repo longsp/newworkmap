@@ -1,0 +1,39 @@
+{
+	"Print to console": {
+		"prefix": "$http",
+		"body": [
+			"import { getRequestInstance, getModulePrefix } from '@audaque/parentdata';",
+			"import { modulePrefix } from '@/api/serviceConstant';",
+			"",
+			"//平台用户模块",
+			"const moduleName = () => getModulePrefix('${WORKSPACE_NAME}') || modulePrefix",
+			"//====================================================${1:模块名}管理开始===================================================",
+			"/**",
+			" * 获取${1:模块名}分页列表",
+			" */",
+			"export const get${TM_FILENAME_BASE/(.)/${1:/upcase}/} = (data) => getRequestInstance().request(moduleName() + '/${2:$TM_FILENAME_BASE}/list', 'POST', data);",
+			"",
+			"/**",
+			" * 新增${1:模块名}",
+			" */",
+			"export const add${TM_FILENAME_BASE/(.)/${1:/upcase}/} = (data) => getRequestInstance().request(moduleName() + `/${2:$TM_FILENAME_BASE}`, 'POST', data);",
+			"",
+			"/**",
+			" * 查看${1:模块名}",
+			" */",
+			"export const view${TM_FILENAME_BASE/(.)/${1:/upcase}/} = (id) => getRequestInstance().request(moduleName() + `/${2:$TM_FILENAME_BASE}/\\${id}`, 'GET');",
+			"",
+			"/**",
+			" * 修改${1:模块名}",
+			" */",
+			"export const update${TM_FILENAME_BASE/(.)/${1:/upcase}/} = (id, data) => getRequestInstance().request(moduleName() + `/${2:$TM_FILENAME_BASE}/\\${id}`, 'PUT', data);",
+			"",
+			"/**",
+			" * 删除${1:模块名}",
+			" */",
+			"export const delete${TM_FILENAME_BASE/(.)/${1:/upcase}/} = (id) => getRequestInstance().request(moduleName() + `/${2:$TM_FILENAME_BASE}/\\${id}`, 'DELETE');",
+			""
+		],
+		"description": "接口模板"
+	}
+}
