@@ -15,11 +15,18 @@ node "./.husky/script/pre-push.js"
 const cp = require('child_process');
 const fs = require("fs");
 const path = require('path');
-const projectName = 'dap';
-console.log('in pre-push');
+//const projectName = 'dap';
+
+let projectPath = path.join(__dirname, '../../');
+let splitArr = projectPath.split(path.sep);
+let projectName = splitArr[splitArr.length - 2];
+let sourceMenuPath = path.join(projectPath, './menu/menu.xml');
+const menuProjectPath = path.join(projectPath, '../menu');
+
+//console.log(projectPath, projectName, sourceMenuPath, menuProjectPath);
 
 let changeFiles = cp.execSync('git diff --name-only HEAD~ HEAD', {
-    cwd: 'E:\\codeWork\\dap'
+    cwd: projectPath
 }).toString().trim(); // 获取改动列表
 let hasMenu = changeFiles.match('menu/menu.xml') !== null;  // menu是否有改动
 if(!hasMenu) {
@@ -27,7 +34,7 @@ if(!hasMenu) {
 }
 
 let sourceBranchName = cp.execSync('git rev-parse --abbrev-ref HEAD', {
-    cwd: 'E:\\codeWork\\dap'
+    cwd: projectPath
 }).toString().trim(); //获取分支名
 let sourceVersionNumber = sourceBranchName.replace('feature/v', ''); //版本号
 if(sourceVersionNumber === sourceBranchName){
@@ -36,9 +43,8 @@ if(sourceVersionNumber === sourceBranchName){
 }
 // let dimPointLen = sourceVersionNumber.match(/\./g).length;
 // sourceVersionNumber += '.0'.repeat(3- dimPointLen); // 补齐版本号 比如 2.2.3.0 
-let sourceMenuPath = path.join(__dirname, '../../menu/menu.xml');
-const menuProjectPath = path.join(__dirname, '../../../menu');
-let toFilePath = path.join(menuProjectPath, `${projectName}_${sourceVersionNumber}.xml`);
+
+let toFilePath = path.join(menuProjectPath, `./${projectName}`, `${projectName}_${sourceVersionNumber}.xml`);
 
 // 复制
 fs.readFile(sourceMenuPath, 'utf-8', function (err, data) {
@@ -67,6 +73,7 @@ fs.readFile(sourceMenuPath, 'utf-8', function (err, data) {
         });
     });
 });
+
 
 ```
 
